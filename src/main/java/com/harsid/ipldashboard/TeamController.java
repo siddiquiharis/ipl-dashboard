@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -21,6 +23,13 @@ public class TeamController {
     public TeamController(TeamRepository teamRepository, MatchRepository matchRepository) {
         this.teamRepository = teamRepository;
         this.matchRepository = matchRepository;
+    }
+
+    @GetMapping("/teams")
+    public Iterable<Team> getTeams(){
+
+       return teamRepository.findAll();
+
     }
 
     @GetMapping("/teams/{teamName}")

@@ -2,6 +2,9 @@ import { React, useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom'
 import { MatchDetailCard } from '../components/MatchDetailCard';
 import { MatchSmallCard } from '../components/MatchSmallCard';
+import { PieChart } from 'react-minimal-pie-chart';
+import { Link } from 'react-router-dom'
+import './TeamPage.scss';
 
 export const TeamPage = () => {
 
@@ -12,7 +15,7 @@ export const TeamPage = () => {
   useEffect(
     () => {
       const fetchMatches = async () => {
-          const response = await fetch(`http://localhost:8082/teams/${teamName}`);
+          const response = await fetch(`/teams/${teamName}`);
           const data = await response.json();
           setTeam(data);
           console.log(data);
@@ -26,12 +29,33 @@ export const TeamPage = () => {
     return <h1>Team not found</h1>
   }
 
+  const totalWins = team.totalWins;
+  const totalLosses = team.totalMatches - team.totalWins;
+
   return (
     <div className="TeamPage">
-      <h1>{team.teamName}</h1>
+      <div className="team-name-section">
+        <h1 className="team-name">{team.teamName}</h1>
+      </div>
+      <div className="win-loss-section">Wins {totalWins}/Losses {totalLosses}
+        <PieChart 
+          data={[
+            { title: 'Wins', value: totalWins, color: '#7ab382'},
+            { title: 'Losses', value: totalLosses, color: '#d86e81' },
+          ]}
+        />
+      </div>
       
-      <MatchDetailCard teamName = {team.teamName} match = {team.matches[0]}/>
-      {team.matches.slice(1).map(match => <MatchSmallCard teamName = {team.teamName}  match = {match}/>)} 
+      <div className="match-detail-section">
+        <h3>Latest Matches</h3>
+        <MatchDetailCard teamName = {team.teamName} match = {team.matches[0]}/>
+      </div>
+      {team.matches.slice(1).map(match => <MatchSmallCard key={match.id} teamName = {team.teamName}  match = {match}/>)} 
+      <div className="more-link">
+        <Link to={`/teams/${teamName}/matches/${process.env.REACT_APP_DATA_END_YEAR}`}>
+          <span>More</span>
+        </Link>
+      </div>  
 
     </div>
   );
