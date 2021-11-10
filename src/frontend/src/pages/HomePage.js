@@ -10,7 +10,7 @@ export const HomePage = () => {
   useEffect(
     () => {
       const fetchAllTeams = async () => {
-          const response = await fetch(`/teams`);
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams`);
           const data = await response.json();
           setTeams(data);
           console.log(data);

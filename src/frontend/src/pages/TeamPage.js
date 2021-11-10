@@ -15,7 +15,7 @@ export const TeamPage = () => {
   useEffect(
     () => {
       const fetchMatches = async () => {
-          const response = await fetch(`/teams/${teamName}`);
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/${teamName}`);
           const data = await response.json();
           setTeam(data);
           console.log(data);
@@ -40,8 +40,8 @@ export const TeamPage = () => {
       <div className="win-loss-section">Wins {totalWins}/Losses {totalLosses}
         <PieChart 
           data={[
-            { title: 'Wins', value: totalWins, color: '#7ab382'},
-            { title: 'Losses', value: totalLosses, color: '#d86e81' },
+            { title: 'Wins', value: totalWins, color: '#57ac63'},
+            { title: 'Losses', value: totalLosses, color: '#9c3f50' },
           ]}
         />
       </div>
